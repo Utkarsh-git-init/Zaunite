@@ -53,7 +53,7 @@ export function AudioPlayerProvider({ children }) {
         if (!audio) return;
 
         if (activeTrackIndex === null) {
-            await playTrack(0);
+            await playTrack(3);
             return;
         }
         if (audio.paused) {
@@ -139,7 +139,7 @@ export function AudioPlayerProvider({ children }) {
                 onError={() => {
                     if (audioRef.current?.src) {
                         setIsPlaying(false);
-                        setError("Audio failed to load. Verify the Supabase URL and that the browser can play this Opus file.");
+
                     }
                 }}
                 className="hidden"

@@ -1038,3 +1038,129 @@ button:focus-visible, a:focus-visible {
         font-size: 10px;
     }
 }
+
+/* ===== Typography readability upgrade ===== */
+
+html {
+    font-size: 19px;
+}
+
+.brand-name {
+    font-size: 15px;
+}
+
+.nav-link {
+    font-size: 14px;
+}
+
+.nav-cta {
+    font-size: 13px;
+}
+
+.eyebrow,
+.page-kicker,
+.meta-label,
+.small-note,
+.track-count,
+.tour-board-top,
+.experience-number,
+.experience-overline,
+.art-caption,
+.art-side-label,
+.tour-empty-index,
+.experience-side-note {
+    font-size: 13px;
+}
+
+.home-description {
+    font-size: 16px;
+}
+
+.home-description span {
+    font-size: 17px;
+}
+
+.button {
+    min-height: 50px;
+    font-size: 13px;
+}
+
+.home-index {
+    font-size: 12px;
+}
+
+.album-intro {
+    font-size: 18px;
+}
+
+.album-meta strong {
+    font-size: 15px;
+}
+
+.small-note {
+    font-size: 13px;
+    line-height: 1.9;
+}
+
+.track-row {
+    font-size: 15px;
+}
+
+.page-next {
+    font-size: 13px;
+}
+
+.tour-heading > p:last-child {
+    font-size: 17px;
+}
+
+.tour-empty p {
+    font-size: 16px;
+}
+
+.experience-footer p {
+    font-size: 17px;
+    line-height: 1.9;
+}
+
+/* Keep the typography comfortable on smaller screens */
+@media (max-width: 800px) {
+    .brand-name {
+        font-size: 13px;
+    }
+
+    .nav-link {
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 560px) {
+    .nav-link {
+        font-size: 12px;
+    }
+
+    .page-kicker {
+        font-size: 11px;
+    }
+
+    .home-description span {
+        font-size: 16px;
+    }
+
+    .button {
+        font-size: 13px;
+    }
+
+    .album-meta strong {
+        font-size: 13px;
+    }
+
+    .tour-empty p {
+        font-size: 15px;
+    }
+
+    .page-next {
+        font-size: 12px;
+    }
+}
+

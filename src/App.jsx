@@ -6,6 +6,8 @@ import Album from "./pages/Album";
 import Tour from "./pages/Tour";
 import Experience from "./pages/Experience";
 
+
+
 export default function App() {
     return (
         <Routes>

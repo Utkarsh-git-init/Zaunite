@@ -2,10 +2,10 @@
 import { NavLink } from "react-router";
 
 const links = [
-    { label: "HOME", to: "/" },
-    { label: "THE ALBUM", to: "/album" },
+    { label: "THE EVENT", to: "/" },
     { label: "TOUR", to: "/tour" },
     { label: "EXPERIENCE", to: "/experience" },
+    { label: "THE RECORD", to: "/album" },
 ];
 
 export default function Navbar() {
@@ -13,7 +13,7 @@ export default function Navbar() {
         <header className="navbar">
             <NavLink to="/" className="brand" aria-label="Deadbeat home">
                 <span className="brand-mark">T</span>
-                <span className="brand-name">TAME IMPALA</span>
+                <span className="brand-name">DEADBEAT / LIVE</span>
             </NavLink>
 
             <nav className="nav-links" aria-label="Main navigation">

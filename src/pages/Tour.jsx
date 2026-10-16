@@ -1,121 +1,115 @@
-import { Link } from "react-router";
-import styles from "../styles/Tour.module.css";
 
-const tourStops = [
-    { city: "MUMBAI", venue: "Mahalaxmi Racecourse", date: "14 NOV 2026", time: "7:30 PM IST", number: "01" },
-    { city: "BENGALURU", venue: "Bangalore Palace Grounds", date: "18 NOV 2026", time: "7:30 PM IST", number: "02" },
-    { city: "HYDERABAD", venue: "Gachibowli Stadium", date: "22 NOV 2026", time: "7:00 PM IST", number: "03" },
-    { city: "NEW DELHI", venue: "Jawaharlal Nehru Stadium", date: "27 NOV 2026", time: "7:30 PM IST", number: "04" },
-    { city: "PUNE", venue: "Mahalunge Ground", date: "02 DEC 2026", time: "7:00 PM IST", number: "05" },
-    { city: "KOLKATA", venue: "Aquatica Grounds", date: "06 DEC 2026", time: "7:30 PM IST", number: "06" },
+import { Link } from "react-router";
+
+const stops = [
+    { city: "Mumbai", date: "14 NOV 2026", venue: "Mahalaxmi Racecourse", note: "Sleep is optional." },
+    { city: "Bengaluru", date: "18 NOV 2026", venue: "Venue TBA", note: "Existential guitar weather." },
+    { city: "Hyderabad", date: "22 NOV 2026", venue: "Venue TBA", note: "Monday can wait." },
+    { city: "New Delhi", date: "27 NOV 2026", venue: "Venue TBA", note: "Come. Ignore traffic." },
+    { city: "Pune", date: "02 DEC 2026", venue: "Venue TBA", note: "Lose your train of thought." },
+    { city: "Kolkata", date: "06 DEC 2026", venue: "Venue TBA", note: "Return to the void." },
 ];
 
 export default function Tour() {
     return (
-        <main className={`${styles.page} page-shell`}>
-            <div className="page-kicker">
-                <span>02</span>
-                <span>LIVE / ON THE ROAD</span>
-                <span>INDIA TOUR CONCEPT</span>
-            </div>
+        <main className="min-h-screen overflow-hidden bg-[#090a08] px-5 pb-12 pt-28 text-[#f3f2e9] sm:px-8 lg:px-12">
+            <div className="mx-auto max-w-[1440px]">
+                <header className="flex items-end justify-between gap-6">
+                    <div>
+                        <p className="font-mono text-[10px] tracking-[0.25em] text-[#d5ff3f]">
+                            THE DEPARTMENT OF BAD DECISIONS
+                        </p>
+                        <h1 className="mt-3 text-5xl font-black uppercase leading-none tracking-[-0.06em] sm:text-6xl">
+                            DEADBEAT <span className="text-[#d5ff3f]">TOUR.</span>
+                        </h1>
+                        <p className="mt-3 text-xs tracking-wide text-white/50 sm:text-sm">
+                            Same songs. Different cities. Slightly worse decisions.
+                        </p>
+                    </div>
 
-            <section className={styles.heading}>
-                <p className={`eyebrow ${styles.eyebrow}`}>
-                    <span className="status-dot" />
-                    THE DEADBEAT TOUR · INDIA
-                </p>
-                <h1 className={`display-title ${styles.title}`}>
-                    FIND YOUR
-                    <br />
-                    <span>FREQUENCY.</span>
-                </h1>
-                <p className={styles.intro}>
-                    One night. One city. A different state of mind.
-                    Find your stop on the Deadbeat tour.
-                </p>
-                <div className={styles.summary}>
-                    <span>06 CITIES</span>
-                    <span>01 EXPERIENCE</span>
-                    <span>ALL NIGHT LONG</span>
-                </div>
-            </section>
+                    <p className="hidden max-w-48 text-right font-mono text-[10px] leading-5 text-white/35 md:block">
+                        A FICTIONAL TOUR CONCEPT.
+                        <br />
+                        NO REAL TICKETS. GOOD VIBES.
+                    </p>
+                </header>
 
-            <section className={styles.board}>
-                <div className={styles.boardTop}>
-                    <span>THE ROUTE / 2026</span>
-                    <span>SCROLL TO EXPLORE ↓</span>
-                </div>
-
-                <div className={styles.timeline}>
+                {/* Winding route and city stops */}
+                <section className="relative mt-10 md:mt-12" aria-label="Tour stops">
+                    {/* The curved route sits behind the stops */}
                     <svg
-                        className={styles.routeLine}
-                        viewBox="0 0 100 1000"
-                        preserveAspectRatio="none"
                         aria-hidden="true"
+                        viewBox="0 0 1200 150"
+                        preserveAspectRatio="none"
+                        className="pointer-events-none absolute left-0 top-0 hidden h-[150px] w-full overflow-visible md:block"
                     >
                         <path
-                            className={styles.routeGlow}
-                            d="M50 0 C50 70 15 80 15 155 S85 245 85 325 S15 410 15 495 S85 575 85 655 S15 745 15 825 S50 930 50 1000"
-                        />
-                        <path
-                            className={styles.routePath}
-                            d="M50 0 C50 70 15 80 15 155 S85 245 85 325 S15 410 15 495 S85 575 85 655 S15 745 15 825 S50 930 50 1000"
+                            d="M 0 45 C 65 5, 115 5, 200 65 S 335 120, 400 45 S 535 5, 600 85 S 735 125, 800 60 S 935 10, 1000 70 S 1135 100, 1200 25"
+                            fill="none"
+                            stroke="#d5ff3f"
+                            strokeWidth="1.5"
+                            strokeOpacity="0.8"
                         />
                     </svg>
 
-                    {tourStops.map((stop, index) => (
-                        <article
-                            className={`${styles.stop} ${index % 2 === 0 ? styles.stopLeft : styles.stopRight}`}
-                            key={stop.number}
-                        >
-                            <div className={styles.stopContent}>
-                                <div className={styles.stopMeta}>
-                                    <span>STOP {stop.number}</span>
-                                    <span className={styles.stopStar} aria-hidden="true">✳</span>
+                    <div className="grid grid-cols-1 gap-x-3 gap-y-6 sm:grid-cols-2 md:grid-cols-6 md:gap-2">
+                        {stops.map((stop, index) => (
+                            <article
+                                key={stop.city}
+                                className={`relative min-w-0 border-t border-white/20 pt-3 md:border-0 md:pt-0 ${
+                                    index % 2 === 1 ? "md:mt-[74px]" : "md:mt-0"
+                                }`}
+                            >
+                                <div className="flex items-center gap-2 md:mb-[100px]">
+                  <span className="flex size-6 shrink-0 items-center justify-center rounded-full border border-[#d5ff3f] bg-[#090a08] font-mono text-[10px] text-[#d5ff3f] md:absolute md:left-0 md:top-[33px] md:z-10 md:size-4 md:text-[8px]">
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+                                    <span className="font-mono text-[10px] text-white/40 md:hidden">
+                    STOP {String(index + 1).padStart(2, "0")}
+                  </span>
                                 </div>
-                                <p className={styles.stopDate}>{stop.date}</p>
-                                <h2>{stop.city}</h2>
-                                <p className={styles.stopVenue}>{stop.venue}</p>
-                                <div className={styles.stopBottom}>
-                                    <span>{stop.time}</span>
-                                    <span className={styles.ticketLabel}>TICKETS SOON ↗</span>
-                                </div>
-                            </div>
-                            <div className={styles.stopNode} aria-hidden="true">
-                                <span>{stop.number}</span>
-                            </div>
-                        </article>
-                    ))}
-                </div>
 
-                <div className={styles.boardFooter}>
-                    <span>END OF THE LINE</span>
-                    <span>THE NIGHT IS YOURS <span className={styles.lime}>✳</span></span>
-                </div>
-            </section>
+                                <p className="font-mono text-[10px] tracking-wide text-white/45">
+                                    {stop.date}
+                                </p>
 
-            <section className={styles.note}>
-                <span className={styles.noteSymbol} aria-hidden="true">✳</span>
-                <div>
-                    <p className="eyebrow">YOUR CITY. YOUR NIGHT.</p>
-                    <h2>READY TO<br />LOSE YOURSELF?</h2>
-                    <p className={styles.noteCopy}>
-                        Pick your city, bring your people, and let the music take over.
+                                <h2 className="mt-1 text-xl font-black uppercase leading-tight tracking-tight text-[#d5ff3f] lg:text-2xl">
+                                    {stop.city}
+                                </h2>
+
+                                <p className="mt-1 min-h-8 text-[11px] leading-4 text-white/55">
+                                    {stop.venue}
+                                </p>
+
+                                <p className="mt-2 text-[10px] italic text-white/35">
+                                    “{stop.note}”
+                                </p>
+
+                                <Link
+                                    to={`/tickets?city=${encodeURIComponent(stop.city)}`}
+                                    className="mt-4 inline-flex min-h-9 w-full items-center justify-center gap-2 border border-white/25 px-2 font-mono text-[9px] tracking-wider transition-colors hover:border-[#d5ff3f] hover:bg-[#d5ff3f] hover:text-black lg:text-[10px]"
+                                >
+                                    SELECT CITY <span aria-hidden="true">↗</span>
+                                </Link>
+                            </article>
+                        ))}
+                    </div>
+                </section>
+
+                <footer className="mt-10 flex flex-wrap items-center justify-between gap-4 border-t border-white/15 pt-4">
+                    <p className="font-mono text-[9px] leading-4 text-white/30">
+                        FAN-MADE CONCEPT · DATES, VENUES AND TICKETS ARE FICTIONAL.
+                        <br />
+                        NOT A CONFIRMED TAME IMPALA TOUR.
                     </p>
-                    <Link to="/experience" className="button button-lime">
-                        ENTER THE EXPERIENCE <span>↗</span>
+
+                    <Link
+                        to="/experience"
+                        className="font-mono text-[10px] tracking-wider text-[#d5ff3f] hover:text-white"
+                    >
+                        MORE NONSENSE ↗
                     </Link>
-                </div>
-            </section>
-
-            <p className={styles.disclaimer}>
-                UNOFFICIAL FAN-MADE CONCEPT · ALL LOCATIONS, DATES AND VENUES ARE
-                PLACEHOLDERS, NOT CONFIRMED TOUR ANNOUNCEMENTS.
-            </p>
-
-            <div className="page-next">
-                <span>CHANGE THE FREQUENCY</span>
-                <Link to="/experience">THE EXPERIENCE <span>↗</span></Link>
+                </footer>
             </div>
         </main>
     );

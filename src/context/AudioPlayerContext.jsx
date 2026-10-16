@@ -34,6 +34,7 @@ export function AudioPlayerProvider({ children }) {
             audio.load();
             setActiveTrackIndex(index);
             setCurrentTime(0);
+            setDuration(0);
         }
 
         try {

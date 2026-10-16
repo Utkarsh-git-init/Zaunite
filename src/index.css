@@ -1164,3 +1164,15 @@ html {
     }
 }
 
+/* Keep content visible above the fixed global audio player */
+.home-page {
+    padding-bottom: 144px;
+}
+
+.page-shell {
+    padding-bottom: 144px;
+}
+
+.experience-page {
+    padding-bottom: 144px;
+}

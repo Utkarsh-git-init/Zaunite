@@ -6,6 +6,10 @@ import Album from "./pages/Album";
 import Tour from "./pages/Tour";
 import Experience from "./pages/Experience";
 
+import Tickets from "./pages/Tickets";
+import Checkout from "./pages/Checkout";
+import BookingConfirmation from "./pages/BookingConfirmation";
+
 
 
 export default function App() {
@@ -16,6 +20,12 @@ export default function App() {
                 <Route path="/album" element={<Album />} />
                 <Route path="/tour" element={<Tour />} />
                 <Route path="/experience" element={<Experience />} />
+
+                // Inside the existing SiteLayout route:
+                <Route path="tickets" element={<Tickets />} />
+                <Route path="checkout" element={<Checkout />} />
+                <Route path="booking/confirmation" element={<BookingConfirmation />}/>
+
                 <Route
                     path="*"
                     element={

@@ -131,7 +131,7 @@ export default function Tickets() {
                         {ticketTiers.map((tier, index) => (
                             <article
                                 key={tier.id}
-                                className="border border-white/15 p-5 transition-colors hover:border-white/35 sm:p-7"
+                                className="relative border border-white/15 p-5 transition-all duration-300 ease-out hover:z-10 hover:scale-[1.015] hover:border-[#d5ff3f]/60 hover:bg-white/[0.025] hover:shadow-[0_12px_40px_rgba(213,255,63,0.08)] motion-reduce:transform-none motion-reduce:transition-none sm:p-7"
                             >
                                 <div className="flex flex-col justify-between gap-5 sm:flex-row sm:items-center">
                                     <div>

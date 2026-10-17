@@ -1,4 +1,3 @@
-
 import { useCallback, useEffect, useRef, useState } from "react";
 import "./Experience.css";
 import { tracks } from "../data/tracks";
@@ -10,9 +9,6 @@ export default function Experience() {
     const { stopPlayback } = useAudioPlayer();
     const audioRef = useRef(null);
     const canvasRef = useRef(null);
-    const audioContextRef = useRef(null);
-    const analyserRef = useRef(null);
-    const sourceRef = useRef(null);
     const timerRef = useRef(null);
     const frameRef = useRef(null);
 
@@ -21,7 +17,6 @@ export default function Experience() {
     const [error, setError] = useState("");
 
     useEffect(() => {
-        // Stop the site-wide player as soon as the Experience route mounts.
         stopPlayback();
     }, [stopPlayback]);
 
@@ -36,14 +31,8 @@ export default function Experience() {
 
     useEffect(() => {
         return () => {
-            if (timerRef.current) {
-                window.clearTimeout(timerRef.current);
-            }
-
-            if (frameRef.current) {
-                window.cancelAnimationFrame(frameRef.current);
-            }
-
+            if (timerRef.current) window.clearTimeout(timerRef.current);
+            if (frameRef.current) window.cancelAnimationFrame(frameRef.current);
         };
     }, []);
 
@@ -56,20 +45,13 @@ export default function Experience() {
         }
 
         setError("");
-        // Stop and reset the global site player when the user clicks "Click to Begin".
         stopPlayback();
         audio.volume = 0.85;
         audio.muted = false;
         setMuted(false);
 
         try {
-            // Keep playback on the native HTML audio element. This avoids routing
-            // audio through a suspended/closed Web Audio context, which can make
-            // the track appear to play while producing no sound in React StrictMode.
-
-            // Start playback only after the audio graph is ready.
             await audio.play();
-
             setPhase("transition");
 
             if (timerRef.current) window.clearTimeout(timerRef.current);
@@ -79,9 +61,9 @@ export default function Experience() {
             }, 2200);
         } catch (err) {
             console.error("Unable to start the experience:", err);
-            setError('Could not play "Loser". Open the browser console for details.');
+            setError('Could not play "Loser". Check the audio URL and browser console.');
         }
-    }, []);
+    }, [stopPlayback]);
 
     const toggleMute = useCallback(() => {
         const audio = audioRef.current;
@@ -103,7 +85,6 @@ export default function Experience() {
         }
 
         const audio = audioRef.current;
-
         if (audio) {
             audio.pause();
             audio.currentTime = 0;
@@ -119,240 +100,156 @@ export default function Experience() {
         if (phase !== "visualizer") return;
 
         const canvas = canvasRef.current;
-        const audio = audioRef.current;
-
-        if (!canvas || !audio) return;
+        if (!canvas) return;
 
         const ctx = canvas.getContext("2d");
         if (!ctx) return;
 
-        // The graph is created once in beginExperience(), from the user's click.
-        // Do not call createMediaElementSource() again for the same audio element.
-        const analyser = analyserRef.current;
-        const frequencyData = analyser
-            ? new Uint8Array(analyser.frequencyBinCount)
-            : null;
-
         let width = 0;
         let height = 0;
         let dpr = 1;
-        let lastTime = 0;
-        let bassSmooth = 0;
-        let midSmooth = 0;
-        let trebleSmooth = 0;
 
         const resize = () => {
             dpr = Math.min(window.devicePixelRatio || 1, 2);
             width = window.innerWidth;
             height = window.innerHeight;
-
             canvas.width = Math.round(width * dpr);
             canvas.height = Math.round(height * dpr);
             canvas.style.width = `${width}px`;
             canvas.style.height = `${height}px`;
-
             ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-        };
-
-        const averageBand = (start, end) => {
-            if (!analyser || !frequencyData) return 0;
-
-            let sum = 0;
-            const limit = Math.min(end, frequencyData.length);
-
-            for (let i = start; i < limit; i++) {
-                sum += frequencyData[i];
-            }
-
-            return limit > start
-                ? sum / (limit - start) / 255
-                : 0;
         };
 
         const draw = (timestamp) => {
             frameRef.current = window.requestAnimationFrame(draw);
 
-            const delta = Math.min(
-                (timestamp - (lastTime || timestamp)) / 1000,
-                0.05
-            );
+            const t = timestamp * 0.00035;
+            const bassPulse = 0.5 + 0.5 * Math.sin(t * 1.8);
+            const midPulse = 0.5 + 0.5 * Math.sin(t * 1.15 + 1.7);
+            const horizon = height * (0.48 + Math.sin(t * 0.55) * 0.018);
 
-            lastTime = timestamp;
-
-            if (analyser && frequencyData) {
-                analyser.getByteFrequencyData(frequencyData);
-            }
-
-            const bass = averageBand(1, 10);
-            const mids = averageBand(10, 48);
-            const highs = averageBand(48, 125);
-
-            bassSmooth += (bass - bassSmooth) * 0.12;
-            midSmooth += (mids - midSmooth) * 0.085;
-            trebleSmooth += (highs - trebleSmooth) * 0.09;
-
-            const t = timestamp * 0.00016;
-            const pulse = bassSmooth;
-            const horizon = height * (
-                0.535 + Math.sin(t * 0.7) * 0.012
-            );
-
+            // Deep black-green background.
             ctx.clearRect(0, 0, width, height);
-
-            // Deep black-green base.
-            ctx.fillStyle = "#050704";
+            ctx.fillStyle = "#030502";
             ctx.fillRect(0, 0, width, height);
 
-            // A hazy glow blooms with the low end.
-            const glowRadius =
-                Math.min(width, height) * (0.25 + pulse * 0.22);
-
+            // Large, unmistakable lime bloom around the horizon.
+            const glowRadius = Math.max(width * 0.7, height * 0.75);
             const glow = ctx.createRadialGradient(
-                width * 0.5,
-                horizon,
-                0,
-                width * 0.5,
-                horizon,
-                glowRadius * 2.4
+                width * 0.5, horizon, 0,
+                width * 0.5, horizon, glowRadius
             );
-
-            glow.addColorStop(
-                0,
-                `rgba(195,255,45,${0.15 + pulse * 0.23})`
-            );
-            glow.addColorStop(
-                0.38,
-                `rgba(111,143,23,${0.09 + midSmooth * 0.1})`
-            );
-            glow.addColorStop(1, "rgba(5,7,4,0)");
-
+            glow.addColorStop(0, `rgba(195,255,45,${0.24 + bassPulse * 0.2})`);
+            glow.addColorStop(0.25, `rgba(128,176,28,${0.13 + midPulse * 0.09})`);
+            glow.addColorStop(0.62, "rgba(43,67,12,0.13)");
+            glow.addColorStop(1, "rgba(3,5,2,0)");
             ctx.fillStyle = glow;
             ctx.fillRect(0, 0, width, height);
 
-            // Distant, irregular silhouette.
+            // Bright horizon line.
+            ctx.save();
+            ctx.shadowColor = "#c3ff2d";
+            ctx.shadowBlur = 28 + bassPulse * 30;
+            ctx.strokeStyle = `rgba(225,255,145,${0.75 + bassPulse * 0.2})`;
+            ctx.lineWidth = 2 + bassPulse * 1.5;
             ctx.beginPath();
-            ctx.moveTo(0, horizon + 9);
+            ctx.moveTo(0, horizon);
+            ctx.lineTo(width, horizon);
+            ctx.stroke();
+            ctx.restore();
 
-            for (let x = 0; x <= width + 8; x += 8) {
+            // Distant silhouette, with more dramatic movement.
+            ctx.beginPath();
+            ctx.moveTo(0, horizon + 14);
+            for (let x = 0; x <= width + 6; x += 6) {
                 const ridge =
-                    Math.sin(x * 0.011 + t) * 7 +
-                    Math.sin(x * 0.035 - t * 1.7) * 3;
-
-                ctx.lineTo(x, horizon + ridge + pulse * 8);
+                    Math.sin(x * 0.008 + t * 1.2) * 13 +
+                    Math.sin(x * 0.023 - t * 1.6) * 7 +
+                    Math.sin(x * 0.045 + t * 0.8) * 3;
+                ctx.lineTo(x, horizon + 10 + ridge + bassPulse * 8);
             }
-
             ctx.lineTo(width, height);
             ctx.lineTo(0, height);
             ctx.closePath();
-
-            ctx.fillStyle = "#080b05";
+            ctx.fillStyle = "#060904";
             ctx.fill();
 
-            // Liquid contours ripple outward from the horizon.
-            const ribbonCount = 34;
-
+            // More visible, layered liquid contour waves.
+            const ribbonCount = 46;
             for (let j = 0; j < ribbonCount; j++) {
                 const depth = j / ribbonCount;
-                const baseY = horizon + 8 + depth * height * 0.55;
-                const amplitude =
-                    (4 + depth * 24 + pulse * 35) *
-                    (1 + midSmooth * 0.5);
+                const baseY = horizon + 10 + depth * height * 0.62;
+                const amplitude = 5 + depth * 38 + bassPulse * (12 + depth * 18);
 
                 ctx.beginPath();
-
                 for (let x = 0; x <= width + 4; x += 4) {
-                    const nx = x / width;
-
-                    const centerPull = Math.exp(
-                        -Math.pow((nx - 0.5) * 3.2, 2)
-                    );
-
-                    const wave =
-                        Math.sin(nx * 11 + t * (0.8 + depth) + j * 0.19) *
-                        amplitude;
-
-                    const ripple =
-                        Math.sin(nx * 27 - t * 1.6 + j * 0.32) *
-                        amplitude * 0.27;
-
-                    const distortion =
-                        Math.sin(nx * 5 + t * 0.55) *
-                        midSmooth * 22 * centerPull;
-
-                    const y =
-                        baseY +
-                        wave +
-                        ripple +
-                        distortion +
-                        Math.sin(t + j) * pulse * 9;
+                    const nx = x / Math.max(width, 1);
+                    const centerPull = Math.exp(-Math.pow((nx - 0.5) * 2.6, 2));
+                    const broadWave = Math.sin(nx * 10 + t * (1.1 + depth) + j * 0.2) * amplitude;
+                    const fineWave = Math.sin(nx * 25 - t * 1.9 + j * 0.34) * amplitude * 0.3;
+                    const centerDistortion = Math.sin(nx * 5 + t * 0.8) * midPulse * 28 * centerPull;
+                    const y = baseY + broadWave + fineWave + centerDistortion;
 
                     if (x === 0) ctx.moveTo(x, y);
                     else ctx.lineTo(x, y);
                 }
 
-                const alpha =
-                    0.11 + depth * 0.24 + trebleSmooth * 0.16;
-
-                ctx.strokeStyle = `rgba(195,255,45,${alpha})`;
-                ctx.lineWidth = j % 5 === 0 ? 1.35 : 0.7;
+                const alpha = 0.28 + depth * 0.42;
+                ctx.save();
+                ctx.shadowColor = "#bfff35";
+                ctx.shadowBlur = j % 4 === 0 ? 9 + bassPulse * 8 : 2;
+                ctx.strokeStyle = j % 4 === 0
+                    ? `rgba(225,255,140,${Math.min(alpha + 0.2, 0.95)})`
+                    : `rgba(195,255,45,${Math.min(alpha, 0.82)})`;
+                ctx.lineWidth = j % 4 === 0 ? 2 : 1.15;
                 ctx.stroke();
+                ctx.restore();
             }
 
-            // Sparse flickers on brighter high-frequency moments.
-            if (trebleSmooth > 0.2) {
-                ctx.fillStyle =
-                    `rgba(224,255,135,${trebleSmooth * 0.28})`;
+            // Animated vertical equalizer bars on both sides of the horizon.
+            const barCount = Math.min(100, Math.max(42, Math.floor(width / 14)));
+            const barGap = width / barCount;
+            for (let i = 0; i < barCount; i++) {
+                const wave1 = Math.abs(Math.sin(i * 0.28 + t * 2.3));
+                const wave2 = Math.abs(Math.sin(i * 0.11 - t * 1.45));
+                const centerBoost = Math.exp(-Math.pow((i / barCount - 0.5) * 3, 2));
+                const barHeight = height * (
+                    0.018 + wave1 * 0.07 + wave2 * 0.04 + centerBoost * bassPulse * 0.07
+                );
+                const x = i * barGap + barGap * 0.28;
+                const y = horizon - height * 0.025 - barHeight;
 
-                for (let i = 0; i < 30; i++) {
-                    const x =
-                        (i * 137.5 +
-                            timestamp * (0.008 + trebleSmooth * 0.02)) %
-                        width;
-
-                    const y =
-                        horizon + 12 +
-                        ((i * 47) % Math.max(1, height * 0.42));
-
-                    ctx.fillRect(x, y, 1.3, 1.3);
-                }
+                ctx.fillStyle = `rgba(195,255,45,${0.22 + wave1 * 0.42})`;
+                ctx.fillRect(x, y, Math.max(1.5, barGap * 0.25), barHeight);
             }
 
-            // Gentle grain.
-            ctx.fillStyle =
-                `rgba(220,255,150,${0.025 + trebleSmooth * 0.025})`;
-
-            for (let i = 0; i < 100; i++) {
-                const x = (i * 97.31 + timestamp * 0.006) % width;
-                const y = (i * 53.17 + timestamp * 0.003) % height;
-
-                ctx.fillRect(x, y, 1, 1);
+            // Floating sparks moving through the glow.
+            for (let i = 0; i < 90; i++) {
+                const x = (i * 137.5 + timestamp * (0.012 + (i % 5) * 0.003)) % Math.max(width, 1);
+                const y = (
+                    horizon + 20 +
+                    ((i * 47 + timestamp * (0.012 + (i % 3) * 0.006)) % Math.max(height * 0.48, 1))
+                );
+                const size = i % 9 === 0 ? 2.2 : 1.1;
+                ctx.fillStyle = `rgba(220,255,135,${0.22 + (i % 5) * 0.1})`;
+                ctx.fillRect(x, y, size, size);
             }
 
-            // Analog scanlines.
-            ctx.fillStyle = "rgba(0,0,0,0.13)";
-
+            // Subtle analog scanlines.
+            ctx.fillStyle = "rgba(0,0,0,0.12)";
             for (let y = 0; y < height; y += 4) {
                 ctx.fillRect(0, y, width, 1);
             }
 
-            // Vignette.
+            // Cinematic vignette, without hiding the visualizer.
             const vignette = ctx.createRadialGradient(
-                width / 2,
-                height / 2,
-                height * 0.12,
-                width / 2,
-                height / 2,
-                Math.max(width, height) * 0.72
+                width / 2, height / 2, height * 0.12,
+                width / 2, height / 2, Math.max(width, height) * 0.78
             );
-
             vignette.addColorStop(0, "rgba(0,0,0,0)");
-            vignette.addColorStop(1, "rgba(0,0,0,0.72)");
-
+            vignette.addColorStop(1, "rgba(0,0,0,0.52)");
             ctx.fillStyle = vignette;
             ctx.fillRect(0, 0, width, height);
-
-            // Avoid an unused delta warning while keeping timing capped.
-            void delta;
         };
 
         resize();
@@ -361,7 +258,6 @@ export default function Experience() {
 
         return () => {
             window.removeEventListener("resize", resize);
-
             if (frameRef.current) {
                 window.cancelAnimationFrame(frameRef.current);
                 frameRef.current = null;
@@ -375,9 +271,6 @@ export default function Experience() {
                 ref={audioRef}
                 src={loserTrack?.audioUrl}
                 preload="auto"
-                onPlaying={() => console.log("Audio playing")}
-                onPause={() => console.log("Audio paused")}
-                onEnded={() => console.log("Audio ended")}
                 onError={(event) => {
                     console.error("Audio error:", event.currentTarget.error);
                     setError('Could not load "Loser". Please check the audio URL.');
@@ -445,7 +338,7 @@ export default function Experience() {
                     <canvas
                         className="experience-canvas"
                         ref={canvasRef}
-                        aria-label="Audio-reactive liquid horizon visualizer"
+                        aria-label="Animated liquid horizon and signal visualizer"
                     />
 
                     <div className="experience-hud">
@@ -467,10 +360,7 @@ export default function Experience() {
                                 {muted ? "UNMUTE +" : "MUTE −"}
                             </button>
 
-                            <button
-                                type="button"
-                                onClick={exitExperience}
-                            >
+                            <button type="button" onClick={exitExperience}>
                                 EXIT ×
                             </button>
                         </div>

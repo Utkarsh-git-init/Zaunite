@@ -2,10 +2,12 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import "./Experience.css";
 import { tracks } from "../data/tracks";
+import { useAudioPlayer } from "../context/AudioPlayerContext";
 
 const loserTrack = tracks.find((track) => track.title === "Loser");
 
 export default function Experience() {
+    const { stopPlayback } = useAudioPlayer();
     const audioRef = useRef(null);
     const canvasRef = useRef(null);
     const audioContextRef = useRef(null);
@@ -17,6 +19,11 @@ export default function Experience() {
     const [phase, setPhase] = useState("intro");
     const [muted, setMuted] = useState(false);
     const [error, setError] = useState("");
+
+    useEffect(() => {
+        // Stop the site-wide player as soon as the Experience route mounts.
+        stopPlayback();
+    }, [stopPlayback]);
 
     useEffect(() => {
         const immersive = phase === "transition" || phase === "visualizer";

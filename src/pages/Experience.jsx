@@ -341,6 +341,13 @@ export default function Experience() {
                         aria-label="Animated liquid horizon and signal visualizer"
                     />
 
+                    <div className="experience-lyrics" aria-label="Lyrics">
+                        <p>I'm a loser, babe <span>(Yeah)</span></p>
+                        <p>Do you wanna tear my heart out?</p>
+                        <p>I'm a tragedy</p>
+                        <p>Tryin' to figure this whole mess out</p>
+                    </div>
+
                     <div className="experience-hud">
                         <span className="experience-brand">✳ DEADBEAT</span>
                         <span className="experience-now-playing">

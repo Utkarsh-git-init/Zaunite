@@ -1,4 +1,3 @@
-
 import { Link } from "react-router";
 
 const stops = [
@@ -34,9 +33,7 @@ export default function Tour() {
                     </p>
                 </header>
 
-                {/* Winding route and city stops */}
                 <section className="relative mt-10 md:mt-12" aria-label="Tour stops">
-                    {/* The curved route sits behind the stops */}
                     <svg
                         aria-hidden="true"
                         viewBox="0 0 1200 150"
@@ -61,12 +58,12 @@ export default function Tour() {
                                 }`}
                             >
                                 <div className="flex items-center gap-2 md:mb-[100px]">
-                  <span className="flex size-6 shrink-0 items-center justify-center rounded-full border border-[#d5ff3f] bg-[#090a08] font-mono text-[10px] text-[#d5ff3f] md:absolute md:left-0 md:top-[33px] md:z-10 md:size-4 md:text-[8px]">
-                    {String(index + 1).padStart(2, "0")}
-                  </span>
+                                    <span className="flex size-6 shrink-0 items-center justify-center rounded-full border border-[#d5ff3f] bg-[#090a08] font-mono text-[10px] text-[#d5ff3f] md:absolute md:left-0 md:top-[33px] md:z-10 md:size-4 md:text-[8px]">
+                                        {String(index + 1).padStart(2, "0")}
+                                    </span>
                                     <span className="font-mono text-[10px] text-white/40 md:hidden">
-                    STOP {String(index + 1).padStart(2, "0")}
-                  </span>
+                                        STOP {String(index + 1).padStart(2, "0")}
+                                    </span>
                                 </div>
 
                                 <p className="font-mono text-[10px] tracking-wide text-white/45">
@@ -87,7 +84,7 @@ export default function Tour() {
 
                                 <Link
                                     to={`/tickets?city=${encodeURIComponent(stop.city)}`}
-                                    className="mt-4 inline-flex min-h-9 w-full items-center justify-center gap-2 border border-white/25 px-2 font-mono text-[9px] tracking-wider transition-colors hover:border-[#d5ff3f] hover:bg-[#d5ff3f] hover:text-black lg:text-[10px]"
+                                    className="mt-4 inline-flex min-h-9 w-full items-center justify-center gap-2 border border-white/25 px-2 font-mono text-[9px] tracking-wider text-[#f3f2e9] transition-colors hover:border-[#d5ff3f] hover:bg-[#d5ff3f] hover:!text-[#090a08] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#d5ff3f] lg:text-[10px]"
                                 >
                                     SELECT CITY <span aria-hidden="true">↗</span>
                                 </Link>

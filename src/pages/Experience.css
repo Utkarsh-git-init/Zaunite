@@ -66,20 +66,22 @@
     z-index: 3;
     width: min(90%, 760px);
     transform: translateX(-50%);
-    color: #f3f2e9;
+    color: rgba(225, 255, 145, 0.72);
     font-family: "Barlow Condensed", sans-serif;
     font-size: clamp(18px, 2.5vw, 30px);
-    font-weight: 700;
+    font-weight: 500;
     line-height: 1.35;
-    letter-spacing: .015em;
+    letter-spacing: .035em;
     text-align: center;
-    text-shadow: 0 2px 18px #000, 0 0 28px #d5ff3f20;
+    text-shadow: 0 0 12px rgba(195, 255, 45, 0.2);
+    opacity: 0.78;
+    filter: blur(0.15px);
     pointer-events: none;
-    animation: experience-fade-in 1.8s ease both;
+    animation: experience-lyrics-drift 7s ease-in-out infinite alternate, experience-fade-in 1.8s ease both;
 }
 .experience-lyrics p { margin: 0; }
 .experience-lyrics p + p { margin-top: 3px; }
-.experience-lyrics span { color: var(--lime); font-size: .8em; }
+.experience-lyrics span { color: rgba(213, 255, 63, 0.7); font-size: .8em; }
 
 /* Minimal HUD */
 .experience-hud { position: absolute; inset: 0; z-index: 3; pointer-events: none; animation: experience-fade-in 1.8s ease both; }
@@ -101,6 +103,10 @@ body.experience-mode .navbar, body.experience-mode aside[aria-label="Music playe
 @keyframes experience-pulse { 0%, 100% { box-shadow: 0 0 25px #d5ff3f12; } 50% { box-shadow: 0 0 55px #d5ff3f35; } }
 @keyframes experience-fade-to-black { from { opacity: 0; } to { opacity: 1; } }
 @keyframes experience-fade-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes experience-lyrics-drift {
+    from { opacity: 0.58; transform: translate(-50%, 0); }
+    to { opacity: 0.82; transform: translate(-50%, 5px); }
+}
 /* Mobile */
 @media (max-width: 600px) {
  .deadbeat-experience { min-height: max(600px, calc(100svh - 190px)); }
@@ -129,5 +135,6 @@ body.experience-mode .navbar, body.experience-mode aside[aria-label="Music playe
 @media (prefers-reduced-motion: reduce) {
  .experience-play { animation: none; transition: none; }
  .experience-blackout { animation-duration: .2s; }
- .experience-hud, .experience-lyrics { animation-duration: .2s; }
+ .experience-hud { animation-duration: .2s; }
+ .experience-lyrics { animation: none; opacity: 0.72; }
 }

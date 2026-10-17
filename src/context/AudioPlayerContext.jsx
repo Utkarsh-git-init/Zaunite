@@ -92,6 +92,16 @@ export function AudioPlayerProvider({ children }) {
         void playTrack(previousIndex);
     }, [activeTrackIndex, playTrack]);
 
+    const stopPlayback = useCallback(() => {
+        const audio = audioRef.current;
+        if (!audio) return;
+
+        audio.pause();
+        audio.currentTime = 0;
+        setIsPlaying(false);
+        setCurrentTime(0);
+    }, []);
+
     const seek = useCallback((time) => {
         const audio = audioRef.current;
         if (!audio || !Number.isFinite(time)) return;
@@ -111,10 +121,11 @@ export function AudioPlayerProvider({ children }) {
         togglePlay,
         playNext,
         playPrevious,
+        stopPlayback,
         seek,
     }), [
         activeTrackIndex, isPlaying, currentTime, duration, error,
-        playTrack, togglePlay, playNext, playPrevious, seek,
+        playTrack, togglePlay, playNext, playPrevious, stopPlayback, seek,
     ]);
 
     return (

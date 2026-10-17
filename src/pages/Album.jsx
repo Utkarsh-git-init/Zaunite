@@ -1,4 +1,5 @@
 
+import { useEffect } from "react";
 import { Link } from "react-router";
 import { useAudioPlayer } from "../context/AudioPlayerContext";
 
@@ -7,6 +8,12 @@ const artistImage =
 
 export default function Album() {
     const { tracks, activeTrackIndex, isPlaying, playTrack } = useAudioPlayer();
+
+    useEffect(() => {
+        if (window.location.hash === "#tracklist") {
+            document.getElementById("tracklist")?.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+    }, []);
 
     return (
         <main className="min-h-screen bg-[#11120f] px-5 pb-36 pt-8 text-[#f1f0e8] sm:px-10 lg:px-16">
@@ -76,7 +83,7 @@ export default function Album() {
                     </div>
                 </section>
 
-                <section className="mt-28">
+                <section id="tracklist" className="mt-28 scroll-mt-6">
                     <div className="mb-8 flex flex-wrap items-end justify-between gap-5">
                         <div>
                             <p className="mb-3 font-mono text-xs tracking-[0.2em] text-[#d5ff3f]">

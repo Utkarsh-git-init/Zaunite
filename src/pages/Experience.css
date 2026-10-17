@@ -6,7 +6,7 @@
     width: 100%;
     min-height: max(620px, calc(100svh - 210px));
     overflow: hidden;
-    background: #030402;
+    background: transparent;
     color: var(--lime);
     font-family: "DM Mono", monospace;
 }
@@ -16,14 +16,7 @@
     position: absolute;
     inset: 0;
     z-index: 0;
-
-    background-image: url("/images/kevin-parker-lead-singer-of-tame-impala-DP6PHKZCIJFIPDSUPEWNPG6C7M.avif");
-    background-size: cover;
-    background-position: center;
-
-    opacity: 1;
-    filter: brightness(0.75) saturate(1.2);
-    transform: scale(1.04);
+    background: transparent;
     pointer-events: none;
 }
 

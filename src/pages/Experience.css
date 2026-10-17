@@ -98,7 +98,7 @@
 .experience-control-buttons button:last-child:hover { color: #090a08; background: var(--lime); box-shadow: 0 0 22px #d5ff3f70; }
 /* Hide actual site navigation and global audio player */
 body.experience-mode { overflow: hidden; }
-body.experience-mode .navbar, body.experience-mode aside[aria-label="Music player"] { display: none !important; }
+body.experience-mode .navbar, body.experience-mode aside[aria-label^="Music player"] { display: none !important; }
 /* Motion */
 @keyframes experience-pulse { 0%, 100% { box-shadow: 0 0 25px #d5ff3f12; } 50% { box-shadow: 0 0 55px #d5ff3f35; } }
 @keyframes experience-fade-to-black { from { opacity: 0; } to { opacity: 1; } }

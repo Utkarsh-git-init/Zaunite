@@ -345,7 +345,7 @@ export default function Experience() {
                         <p>I'm a loser, babe <span>(Yeah)</span></p>
                         <p>Do you wanna tear my heart out?</p>
                         <p>I'm a tragedy</p>
-                        <p>Tryin' to figure this whole mess out</p>
+                        <p>Tryin' to figure this whole mess out...</p>
                     </div>
 
                     <div className="experience-hud">

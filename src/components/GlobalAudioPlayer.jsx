@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router";
 import { useAudioPlayer } from "../context/AudioPlayerContext";
 
 function formatTime(seconds) {
@@ -8,6 +9,7 @@ function formatTime(seconds) {
 }
 
 export default function GlobalAudioPlayer() {
+    const navigate = useNavigate();
     const {
         activeTrack,
         activeTrackIndex,
@@ -26,8 +28,9 @@ export default function GlobalAudioPlayer() {
 
     return (
         <aside
-            aria-label="Music player"
-            className="fixed inset-x-0 bottom-0 z-[100] border-t border-white/15 bg-[#191a16]/95 px-4 py-3 text-[#f1f0e8] shadow-2xl backdrop-blur-xl sm:px-8"
+            aria-label="Music player — click to view album tracklist"
+            onClick={() => navigate("/album#tracklist")}
+            className="fixed inset-x-0 bottom-0 z-[100] cursor-pointer border-t border-white/15 bg-[#191a16]/95 px-4 py-3 text-[#f1f0e8] shadow-2xl backdrop-blur-xl sm:px-8"
         >
             <div className="mx-auto grid max-w-7xl grid-cols-[minmax(0,1fr)_auto] items-center gap-x-4 gap-y-2 sm:grid-cols-[minmax(180px,1fr)_auto_minmax(180px,1fr)] sm:gap-x-6">
                 <div className="min-w-0">
@@ -40,7 +43,7 @@ export default function GlobalAudioPlayer() {
                     <p className="mt-0.5 truncate text-[11px] text-white/40">Tame Impala · Deadbeat</p>
                 </div>
 
-                <div className="flex items-center justify-end gap-2 sm:justify-center sm:gap-3">
+                <div onClick={(event) => event.stopPropagation()} className="flex items-center justify-end gap-2 sm:justify-center sm:gap-3">
                     <button
                         type="button"
                         onClick={playPrevious}
@@ -67,7 +70,7 @@ export default function GlobalAudioPlayer() {
                     </button>
                 </div>
 
-                <div className="col-span-2 flex min-w-0 items-center gap-3 sm:col-span-1">
+                <div onClick={(event) => event.stopPropagation()} className="col-span-2 flex min-w-0 items-center gap-3 sm:col-span-1">
           <span className="w-9 shrink-0 text-right font-mono text-[10px] tabular-nums text-white/45">
             {formatTime(currentTime)}
           </span>

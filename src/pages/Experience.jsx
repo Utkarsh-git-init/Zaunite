@@ -56,6 +56,8 @@ export default function Experience() {
         }
 
         setError("");
+        // Stop and reset the global site player when the user clicks "Click to Begin".
+        stopPlayback();
         audio.volume = 0.85;
         audio.muted = false;
         setMuted(false);

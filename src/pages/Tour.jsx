@@ -11,7 +11,19 @@ const stops = [
 
 export default function Tour() {
     return (
-        <main className="min-h-screen overflow-hidden bg-[#090a08] px-5 pb-12 pt-28 text-[#f3f2e9] sm:px-8 lg:px-12">
+        <main className="min-h-screen overflow-hidden bg-[#090a08] px-5 pb-12 pt-28 text-[#f3f2e9] sm:px-8 lg:px-12"
+              style={{
+                  backgroundImage: `
+      linear-gradient(180deg, rgba(9,10,8,0.55), #090a08 95%),
+      linear-gradient(rgba(9,10,8,0.48), rgba(9,10,8,0.65)),
+      url("/images/kevin-parker-lead-singer-of-tame-impala-DP6PHKZCIJFIPDSUPEWNPG6C7M.avif")
+    `,
+                  backgroundSize: "cover",
+                  backgroundPosition: "center top",
+                  backgroundRepeat: "no-repeat",
+              }}
+
+        >
             <div className="mx-auto max-w-[1440px]">
                 <header className="flex items-end justify-between gap-6">
                     <div>

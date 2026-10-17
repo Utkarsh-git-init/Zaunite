@@ -12,9 +12,37 @@
 }
 .deadbeat-experience *, .deadbeat-experience *::before, .deadbeat-experience *::after { box-sizing: border-box; }
 .deadbeat-experience audio { display: none; }
-.experience-landscape, .experience-vignette, .experience-blackout { position: absolute; inset: 0; pointer-events: none; }
-.experience-landscape { z-index: -2; background-image: url("/images/deadbeat-landscape.png"); background-size: cover; background-position: center; opacity: .72; filter: brightness(.55) saturate(1.15); transform: scale(1.04); }
-.experience-vignette { z-index: -1; background: radial-gradient(ellipse at center, transparent 15%, #0009 100%), linear-gradient(180deg, #0008, transparent 35%, #0008); }
+.experience-landscape {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+
+    background-image: url("/images/kevin-parker-lead-singer-of-tame-impala-DP6PHKZCIJFIPDSUPEWNPG6C7M.avif");
+    background-size: cover;
+    background-position: center;
+
+    opacity: 1;
+    filter: brightness(0.75) saturate(1.2);
+    transform: scale(1.04);
+    pointer-events: none;
+}
+
+.experience-vignette {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+
+    background:
+            radial-gradient(ellipse at center, transparent 15%, #0009 100%),
+            linear-gradient(180deg, #0008, transparent 35%, #0008);
+}
+.experience-header,
+.experience-footer,
+.experience-intro-center,
+.experience-side-note {
+    z-index: 2;
+}
 /* Intro */
 .experience-header, .experience-footer { position: absolute; right: 3.5%; left: 3.5%; display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; font-size: 10px; line-height: 1.7; letter-spacing: .15em; }
 .experience-header { top: 4%; }
